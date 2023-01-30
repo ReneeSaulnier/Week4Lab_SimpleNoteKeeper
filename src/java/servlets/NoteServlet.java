@@ -27,23 +27,30 @@ public class NoteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        
+            // Display the edit form
+            String edit = request.getParameter("edit");
+            if(edit != null){
+                 getServletContext().getRequestDispatcher("/WEB-INF/editnote.jsp").forward(request, response);
+            }
+        
         try{
              // Setting the file path
             String path = getServletContext().getRealPath("/WEB-INF/note.txt");
             // Reading the text file
             BufferedReader br = new BufferedReader(new FileReader(new File(path)));
-            // Reading in the values into variables
+            // Reading the values into variables
             String title = br.readLine();
             String contents = br.readLine();
             // Creating a new instance of note 
             Note note = new Note(title, contents);
             // Setting the attribute for the jsp
             request.setAttribute("note", note);
+            br.close();
+            
         } catch (IOException e){
             
         }              
         getServletContext().getRequestDispatcher("/WEB-INF/viewnote.jsp").forward(request, response);
-        
     }
 
     
@@ -57,16 +64,15 @@ public class NoteServlet extends HttpServlet {
         // Reading the text file
         PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(path, false)));      
         // Reading in the values into variables
-        pw.write(title);
-        pw.write(contents);
+        pw.println(title);
+        pw.print(contents);
         // Creating a new instance of note 
         Note note = new Note(title, contents);
         // Setting the attribute for the jsp
         request.setAttribute("note", note);
-        pw.close();
         
         getServletContext().getRequestDispatcher("/WEB-INF/editnote.jsp").forward(request, response);
-           
+        pw.close();   
     }
 
     
