@@ -12,7 +12,7 @@
         <title>Edit Note</title>
     </head>
     <body>
-        <form>
+        <form action="note" method="post">
             <h1>Simple Note Keeper</h1>
             <h2>Edit Note</h2>
             Title: <input type="text" name="title" value="${note.title}">
